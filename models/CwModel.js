@@ -6,9 +6,7 @@ var cwSchema = new Schema({
     title: String,
     write: String,
     pass: String,
-    type: String,
-    sub: String,
-    pro: String
+    type: String
 });
 
 module.exports = mongoose.model('cw', cwSchema);
