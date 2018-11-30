@@ -567,7 +567,7 @@
         document.write('<thead><h1>시간표 생성</h1></thead>');
         document.write('<tbody>');
         document.write('<tr>');
-        document.write('<td><select size="10" name="optionG" onchange="selectEvent()">');
+        document.write('<td><select size="10" name="optionG" onchange="selectEvent();">');
         for (var i = 0; i < 5; i++) {
           document.write('<option value='+i+' name="timeSelect">['+i+']</option>');
         }
@@ -592,13 +592,23 @@
         document.write('</tbody>');
         document.write('<tfoot>');
         document.write('<tr>');
-        document.write('<td colspan="3"><input type="button" name="" value="Create" onclick="goBack();"></td></tr>');
+        document.write('<form action="makesc" method="post" >');
+        //<!-- DB로 데이터를 보내기 위해 tdate와 subname을 서버로 보냄-->
+        document.write('<input type="hidden" name="tdate" value='+localStorage.getItem('local_Tdate')+'>');
+        document.write('<input type="hidden" name="subname" value='+localStorage.getItem("local_SubName")+'>');
+        document.write('<td colspan="3"><input type="submit" name="" value="Create" onClick="goBack();" ></td></tr>');
+        document.write('</form>');
         document.write('</tfoot>');
         document.write('</table>');
 
         localStorage.removeItem("sel_value");
         localStorage.removeItem("choice");
+
       }
+
+
+
+
 
       let goBack = function(){
      //  for (let i = 0; i < rad.length; i++) {
@@ -607,8 +617,9 @@
      //     localStorage.setItem("Rad", i);
      //    }
      // }
-      opener.location = "Main.html";
-      self.close();
+    //  opener.location = "Main.html";
+      setTimeout("self.close()",1000);
+      //self.close();
       }
 
       let selectEvent = function(){
@@ -634,7 +645,7 @@ Curriclum.html  ->  TableOption.html  -> MTT_OPT.html  ->  main.html
 278 : localStorage.setItem("local_SubName", JSON.stringify(SubName));
 
 이 두 변수가 데이터 베이스에 저장되어야 하며  Main.html에서 불러올수 있어야 한다
-main :131 ,133 
+main :131 ,133
 */
 
 

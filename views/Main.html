@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Welcome to "C"간표</title>
-
+     <link rel="stylesheet" type="text/css" href="TTstyle.css">
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -24,26 +24,31 @@
     <link href="css/sb-admin.css" rel="stylesheet">
     <script type="text/javascript">
     /////////////////////////////////////////////////////// Debuging
-    // let mjrarr = JSON.parse(localStorage.getItem("dataA"));
-    // let libarr = JSON.parse(localStorage.getItem("dataB"));
-    // let libsarr = JSON.parse(localStorage.getItem("dataC"));
-    // let optarr = JSON.parse(localStorage.getItem("Opt"));
-    // let sbn = JSON.parse(localStorage.getItem("Sub"));
-    //
-    // alert(mjrarr);
-    // alert(libarr);
-    // alert(libsarr);
-    // alert(optarr);
-    // alert(localStorage.tdate);
-    // alert(sbn)
-    // alert(localStorage.getItem("Rad"));
-    // if(localStorage.getItem("Rad") == 0){
-    //   alert('옵션무시');
-    // }
-    // else{
-    //   alert('옵션부여');
-    // }
-    // //////////////////////////////////////////////////////////
+    let mjrarr = JSON.parse(localStorage.getItem("dataA"));
+    let libarr = JSON.parse(localStorage.getItem("dataB"));
+    let libsarr = JSON.parse(localStorage.getItem("dataC"));
+    let optarr = JSON.parse(localStorage.getItem("Opt"));
+    let sbn = JSON.parse(localStorage.getItem("Sub"));
+
+    //4. 3의 내용이 main 에서 불러와 지는지
+    //5. i에 따라 달라진 Tdate의 값이  Main.html 로 가느느 확인버튼 을 누름과 동시에
+        //로컬저장소러 저장되어야 한다
+  //  alert("Tdate : " + localStorage.getItem("local_Tdate"));
+  //  alert("SubName : " + JSON.parse(localStorage.getItem("local_SubName")));
+    //alert(mjrarr);
+    //alert(libarr);
+  //  alert(libsarr);
+    //alert(optarr);
+    //alert(localStorage.tdate);
+    //alert(sbn)
+    //alert(localStorage.getItem("Rad"));
+    if(localStorage.getItem("Rad") == 0){
+    //  alert('옵션무시');
+    }
+    else{
+    //  alert('옵션부여');
+    }
+    //////////////////////////////////////////////////////////
 
     </script>
 
@@ -88,31 +93,32 @@
 <!--측면 보드 설정-->
 <!-- Sidebar -->
 <ul class="sidebar navbar-nav">
-  <li class="nav-item active">
+  <li class="nav-item">
     <a class="nav-link" href="Main.html">
-      <i class="fas fa-fw fa-calendar-check"></i>
-      <span>나의 시간표</span>
+      <span>시간표</span>
     </a>
   </li>
+
   <li class="nav-item">
     <a class="nav-link" href="Curriculum.html">
-      <i class="fas fa-fw fa-chart-area"></i>
-      <span>커리큘럼</span></a>
+        <span>커리큘럼</span></a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="LectureEvaluation.html">
-      <i class="fas fa-fw fa-book-reader"></i>
-      <span>강의 평가</span></a>
+    <a class="nav-link" href="LectureReview.html">
+      <!--<i class="fas fa-fw fa-table"></i>-->
+      <span>강의평가</span></a>
   </li>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-fw fa-user-friends"></i>
+    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"aria-haspopup="true" aria-expanded="false">
+      <!--아이콘 추가시 이 부분에 추-->
       <span>게시판</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <a class="dropdown-item" href="FreeC.html">자유 게시판</a>
-      <a class="dropdown-item" href="Q&AC.html">Q&A게시판</a>
-    </div>
+      <h6 class="dropdown-header">게시판 메뉴 :</h6>
+      <a class="dropdown-item" href="Login.html">자유게시판</a>
+      <a class="dropdown-item" href="Q&AC.html">Q&A 게시판</a>
+      <a class="dropdown-item" href="LectureReview.html">강의평가 게시판</a>
+
   </li>
 </ul>
       <div id="content-wrapper">
@@ -120,18 +126,18 @@
         <div class="container-fluid">
           <!-- Page Content 페이지 최 상단부 메세지 -->
           <h1>"Welcome to "C"간표</h1>
-          <hr>
-          <!--본문처리-->
-        <table cellspacing="5" align="center" border="1" bordercolor="#22223b"
-        width="800" height="600">
-        <p></p>
-        <caption>
-          <font size="20">  <!--여백-->
-        </caption>
         <!--여기서 부터  본문-->
         <script>
-        Tdate=localStorage.tdate;
-        SubName=sbn;
+      //  alert(JSON.parse('<%- JSON.stringify(dbsubname) %>'))
+      // DB에서 데이터를 받음 는 ejs엔진에서 데이터를 받을때 사용함
+        let SubName = "<%=dbsubname%>"
+        SubName=SubName.replace(/&#34;/g,"'")
+        SubName = eval(SubName)
+        //let aaaa= JSON.parse(localStorage.getItem("local_SubName"))
+        // SubName=sbn;
+        let T_date = "<%=dbtdate%>";
+
+        //localStorage.getItem("local_Tdate")
         function CreateTT(Tdate,SubName){ // 데이터와 과목이름을 넘겨받아 시간표 생성함수
                                           // 잘돌아감
             //<table>
@@ -168,132 +174,10 @@
         }
 
 
-        CreateTT(Tdate,SubName);
+        CreateTT(T_date,SubName);
+      //localStorage.clear();
+
       </script>
-
-
-
-
-
-<!--
-        /*
-        <tr align="center">
-            <td width="100"  bgcolor="#4a4e69"> </td>
-            <td width="150" bgcolor="#4a4e69"><font color = "#eeeeee">  Mon  </font></td>
-            <td width="150" bgcolor="#4a4e69"><font color = "#eeeeee">  Tue  </font></td>
-            <td width="150" bgcolor="#4a4e69"><font color = "#eeeeee">  Wen  </font></td>
-            <td width="150" bgcolor="#4a4e69"><font color = "#eeeeee">  Thu  </font></td>
-            <td width="150" bgcolor="#4a4e69"><font color = "#eeeeee">  Fri  </font></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">09</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">10</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">11</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">12</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">01</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">02</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">03</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">04</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">05</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">06</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr align="center">
-            <td bgcolor="#4a4e69"><font color = "#eeeeee">07</font></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-
-        </div>
-        <!- /.container-fluid -->
-
-        <!-- Sticky Footer -->
-        <footer class="sticky-footer">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
-            </div>
-          </div>
-        </footer> -->
 
       </div>
       <!-- /.content-wrapper -->

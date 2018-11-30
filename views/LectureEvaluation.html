@@ -19,7 +19,10 @@
 </head>
 
 <body id="page-top">
-  <script> var cw = JSON.parse('<%- JSON.stringify(cw) %>'); </script>
+
+  <script>
+  //데이터를 ejs엔진 형식으로 가져옴
+  var cw = JSON.parse('<%- JSON.stringify(cw) %>'); </script>
   <!-- 메인화면 네비게이션 바-->
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>

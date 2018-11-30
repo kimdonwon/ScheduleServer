@@ -25,6 +25,46 @@ module.exports = {
       call(err,data)
     })
   },
+  UpdateSc:function(req,res,DataModel){
+    DataModel.findById(req.session.idd,function(err,data){
+      if(err)console.log(err);
+      else {
+        data.subname=req.body.subname;
+        data.tdate=req.body.tdate;
+        data.save(function(err){
+          if(err)console.log(err)
+        })
+      }
+    })
+  },
+
+  FindSc:function(req,res,DataModel,call){
+
+    DataModel.aggregate([{
+      '$match':{
+        '_id':req.session.idd
+      }},
+      {'$project':{
+
+
+               'subname':1,
+               'tdate':1
+
+            }
+          }
+        ],function(err,cw){
+
+            call(err,cw);
+          })
+    // CWModel.find(function(err,cw){
+    //   console.log(cw)
+    //   call(err,cw)
+    // })
+
+  },
+
+
+
   insertCW:function(req,res,type,CWModel){
     var cw = new CWModel();
     cw.id=req.session.idd;
@@ -34,7 +74,7 @@ module.exports = {
     cw.type=type;
     cw.sub=req.body.sub;
     cw.pro=req.body.pro;
-  
+
     cw.save(function(err){
       if(err){
         console.error(err);
@@ -98,6 +138,7 @@ module.exports = {
     // })
 
   }
+
 
 
 

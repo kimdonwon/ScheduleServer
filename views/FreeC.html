@@ -110,6 +110,7 @@
           </ol>
 
           <script>
+          //데이터를 서버에서 가져옴 ( ejs엔진 형식)
           var cw = JSON.parse('<%- JSON.stringify(cw) %>');
           </script>
           <!-- Page Content -->
@@ -124,6 +125,7 @@
                 </tr>
               </thead>
               <tbody>
+                <!--ejs엔진 형식으로 for문 실행 및 데이터를 보여줌-->
                 <% for(var i=0; i<cw.length; i++){ %>
                 <tr>
                   <td class="cols1"><%= i+1%></td>

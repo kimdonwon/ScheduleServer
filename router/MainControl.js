@@ -7,12 +7,23 @@ var ch = require('./filter/check')
 module.exports = function(app){
 
   app.get('/',function(req,res){
-    if(ch.checkSession(req,res))res.render('Main.html')
+    if(ch.checkSession(req,res))res.redirect('Main.html')
     else res.render('Login.html')
 
   })
   app.get('/Main.html',function(req,res){
-    if(ch.checkSession(req,res))res.render('Main.html')
+    if(ch.checkSession(req,res)){
+      controlDB.FindSc(req,res,dataModel,function(err,cw){
+
+        tdate = String(cw[0].tdate);
+        //console.log(cw[0].subname)
+        res.render('Main.html',{
+          dbsubname:cw[0].subname,
+          dbtdate:tdate
+        })
+      })
+
+    }
     else res.render('Login.html')
 
   })
@@ -80,8 +91,17 @@ module.exports = function(app){
     else res.render('Login.html')
 
   })
-//dd
 
+  app.get('/TableOption.html',function(req,res){
+    if(ch.checkSession(req,res))res.render('TableOption.html')
+    else res.render('Login.html')
+
+  })
+  app.get('/MTT_OPT.html',function(req,res){
+    if(ch.checkSession(req,res))res.render('MTT_OPT.html')
+    else res.render('Login.html')
+
+  })
 
 
   app.post('/check',function(req,res){
@@ -105,6 +125,15 @@ module.exports = function(app){
     }
 
     else res.send("빈칸을 채우세요.")
+  })
+
+
+  app.post('/makesc',function(req,res){
+    if(ch.checkSession(req,res)){
+      controlDB.UpdateSc(req,res,dataModel)
+      console.log("완료")
+    }
+
   })
 
 
