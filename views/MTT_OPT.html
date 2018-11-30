@@ -18,21 +18,6 @@
          liberels[i]=new Array(3);
       }
 
-
-       // 각 시간대를 입력한다.
-       //major 초기화
-       // for(let i=0; i<39; i++){
-       //   for(let j=0; j<3; j++){
-       //     major[i][j] = '';
-       //   }
-       // }
-       // //liberels 초기화
-       // for(let i=0; i<31; i++){
-       //   for(let j=0; j<3; j++){
-       //     liberels[i][j] = '';
-       //   }
-       // }
-
        //웹프            09    10   11    12    13    14    15    16    17    18    19    20
        major[4][0] = '000001010000100000000000000000000000000000000000000000000000';
        major[4][1] = '000000000000000000001010000100000000000000000000000000000000';
@@ -288,55 +273,65 @@
        }
        //document.write(SubName);
 
+       // 2. Tdate=ArrTdate[i]로 저장하는 코드
+       // 3. Tdate랑 SubName을 로컬저장소로 저장하는 코드
+       localStorage.setItem("local_SubName", JSON.stringify(SubName));
+       //alert("local에 subname " + SubName);
      }
 
      let ctm = new Array(); // 카테고리 묶기 및 최종 문자열 생성에 쓰임
-     ctm=[000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000,
-      000000000000000000000000000000000000000000000000000000000000];
+     ctm=['000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000',
+      '000000000000000000000000000000000000000000000000000000000000'];
+
 
     let lst = new Array();
     lst=[0,0,0,0,0,0,0,0,0];
 
-
-
-
-
-        // function comb(sub){
-        //   let i,cnt;
-        //   lst=[0,0,0,0,0,0,0,0,0];
-        //   for (i=1;i<13;i++){
-        //     cnt=sub[i].cat;
-        //     cate[cnt][lst[cnt]]=sub[i].time+'/'+sub[i].name;
-        //     lst[cnt]=lst[cnt]+1;
-        //   }
-        //
-        //
-        // }
-        function mixing(a,b){
+        function mixing(a,b){ //두 문자열을 더해주는 함수
           let i;
           let mix='';
+          let ta=''+a;
+          let tb=''+b;
           for(i=0;i<59;i++){
-          mix = mix + ((a.substring(i,i+1))|(b.substring(i,i+1)));
+          mix = mix + ((ta.substring(i,i+1))|(tb.substring(i,i+1)));
           }
           return mix;
         }
 
-        function OverLap(a,b){
+        function OverLap(a,b){ // 두 문자열을 곱해주는 함수
+          //alert(3);
+          let i;
+          let over1='';
+          let over2='';
+          let ta=''+a;
+          let tb=''+b;
+          for(i=0;i<59;i++){
+
+            over1 = ((ta.substring(i,i+1)) & (tb.substring(i,i+1)));
+            //document.write(over1+  '\n')
+            over2 = over2 + over1;//((over1) | (over2.substring(i,i+1)));
+
+          }
+          //document.write(over2+' over2 \n');
+          return over2;
+        }
+
+        function OverLap2(a){ // 한 문자열 내에 1이 있는지 검증하여 돌려주는 함수
           //alert(3);
           let i;
           let over1='0';
           let over2='0';
-
+          let ta=''+a;
           for(i=0;i<59;i++){
 
-            over1=(a.substring(i,i+1)) & (b.substring(i,i+1));
+            over1=(ta.substring(i,i+1));
 
             over2 = ((over1) | (over2));
             //document.write(over1);
@@ -346,14 +341,91 @@
           //document.write(over2);
           //return over;
         }
+        function min(a,b){
+          let i;
+          for(i=0;i<59;i++){
+            if(a.substring(i,i+1) == b.substring(i,i+1)){
+              if(a.substring(i,i+1)==1){
+                a = a.substring(0,i)+'0'+a.substring(i,59);
+              }
+            }
 
+          }
+          return a;
+        }
+        let ctm2 =new Array();
+        ctm2[0]=new Array();
+        ctm2[1]=new Array();
+        ctm2[2]=new Array();
+        ctm2[3]=new Array();
+        ctm2[4]=new Array();
+
+
+        function TagPlus(tag,t){
+          let i,j,k;
+          k=parseInt(t);
+          let str='';
+          for(i=0;i<10;i++){
+            tag[i]=0;
+          }
+          while(k > 1){
+            str = str + parseInt(k%3);
+            k=parseInt(k/3);
+          }
+          str=str+k;
+          //str=str.split("");
+          for(let i=0;i<(str.length);i++){
+              tag[i]=str.substring(i,i+1);
+            }
+          tag.pop();
+          //document.write(tag);
+        }
+        function CheckOver(a){ //01만으로 이루어 졌는지
+          let i=0;
+          let Ov=0;
+          let tmp=0;
+          for(i=0;i<59;i++){
+            tmp = parseInt(a.substring(i,i+1));
+            //tmp =tmp-1;
+            if(tmp >1 ){
+              Ov=1;
+            }
+
+          }
+
+          document.write('\n');
+          return Ov;
+        }
+        function Plus(a,b){ //두 문자열을 숫자처럼 더해줌 함수 그만짜고싶다
+          let i=0;
+          let tmp='';
+          let ta,tb;
+          let t1,t2,t3;
+          if(b == NaN){
+            return a;
+          }
+          //if(b = undefine){}
+          ta=a+'';
+          tb=b+'';
+          for(i=0;i<59;i++){
+            t1 = parseInt(ta.substring(i,i+1));
+            t2 = parseInt(tb.substring(i,i+1));
+            t3=t1+t2;
+            tmp=tmp +t3.toString();
+          }
+          return tmp;
+        }
 
         function CheckOpt(){
-          let selpe = 0;
-          let temp1='0';
-          let temp2='';
+          let temp1='0'; //옵션저장
+          let temp2='0';
           let temp3='0';
-          let i,j,k,l;
+          let temp4='000000000000000000000000000000000000000000000000000000000000';
+          let temp5='';
+          let temp6='';
+          let i,j;
+          let k=0;
+          let l=0;
 
           if(Soption == '00'){
             temp1='000000000000000000000000000000000000000000000000000000000000';
@@ -364,124 +436,79 @@
           }else if(Soption == '11'){
             temp1 = mixing(option[0],option[1]);
           }
-          //document.write(temp1);
-          for(i=0;i<9;i++){ // lst를 한번 훑는다
-             if(lst[i] != '0'){
-               k = Math.floor(Math.random() * lst[i]);
-               temp2 = Cate[i][k];
-               //document.write(temp2+'\n');
-               temp3 = OverLap(temp1,temp2);
-               //document.write(temp3+'\n');
-               if(temp3 == '1'){
-                 temp3='0';
-                 selpe=selpe+1;
-                 i=i-1;
-                 if(i<0){
-                   i=0;
-                 }
-               }
-               else{
-                 temp3=0;
-                 temp1=mixing(temp1,temp2);
-                 ctm[i]=temp2;
-               }
-               if(selpe > 10000 ){
-                 ctm=[000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000,
-                  000000000000000000000000000000000000000000000000000000000000];
-                 SubName=["","","","","","","","",""];
-                 document.write("망했어");
-                 break;
-               }
-             }else{
-                continue;
-             }
-          }
-         //document.write(ctm);
-        }
+          //
+           //temp1고정
+          let tag = new Array();
+          tag = [0,0,0,0,0,0,0,0,0,0];
 
-
-
-
-        //let selpe = 0;
-
-        // function Check_OPT(){
-        //   let temp1=''; //수업시간이 차있는지 유무 판별기
-        //   let temp2=''; // 두번째 수업시간부터 넣을때 뽑은거
-        //   let temp3='0'; // 비교용
-        //   let temp4=''; // 이거정말임시
-        //   let temp5='0';//늘어나는 변수
-        //   let i,j,k,l;
-        //    //실패
-        //   //if(opt){
-        //
-        //   //}
-        //   for(i=0;i<9;i++){ // lst를 한번 훑는다
-        //     if (lst[i] != 0) { // 만약 lst의 i번째 요소에 내용이 있으면
-        //       if (temp1 == '') { // 맨 처음 처리
-        //         k = Math.floor(Math.random() * lst[i]);
-        //         temp1 = cate[i][k].substring(0,59);
-        //         ctm[i]=cate[i][k]; // 첫과목 랜덤지정
-        //       }
-        //       else { // 두번째 과목부터 선택
-        //         k = Math.floor(Math.random() * lst[i]);
-        //         temp2 = cate[i][k]; // 카테고리서 하나 뽑아옴
-        //         for (l=0;l<59;l++) { //기존 문자열이랑 곂치는지 체크
-        //
-        //           temp3 = (temp1.substring(l,l+1)) | (temp2.substring(l,l+1));
-        //
-        //           //temp3 =  ((temp5.toString().substring(l,l+1)) | (temp3));
-        //         }
-        //         if(temp3 != 0){ //곂쳤으면
-        //           selpe=selpe+1;
-        //           i=0;
-        //         }
-        //         else{ // 안겹쳤으면
-        //           for (l=0;l<59;l++) {
-        //             temp4 = temp4 + ((temp1.substring(l,l+1)) | (temp2.substring(l,l+1)));
-        //             temp1 = temp4;
-        //             temp4='';
-        //           }
-        //           ctm[i]=temp2;
-        //         }
-        //
-        //       }
-        //     }
-        //     else {
-        //       continue;
-        //     }
-        //   }
-        //
-        //   //document.write(ctm);
-        // }
-
-
-        // 곂치는지 체크하고 문자열 하나로 묶기
-        //곂치면 윗함수 다시 부르기
-
-
-        function MakeTT(ctm){
-          let i,j;
-          let tmpTdate='';
-          for(i=1;i<9;i++){
-            for(j=0;j<60;j++){
-              tmpTdate = tmpTdate + ((Tdate.toString().substring(j,j+1))| (ctm[i].toString().substring(j,j+1) * (i)));
+          for(j=0;j<1900;j++){//19683;j++){
+            TagPlus(tag,j);
+            temp4 = temp1;
+            for(i=0;i<9;i++){
+              //TagPlus(tag,j);
+              if(Cate[i][tag[i]] != undefined){
+                ctm[i]=Cate[i][tag[i]];
+                temp2=Cate[i][tag[i]];
+                temp4 = Plus(temp4,temp2);
+              }
             }
 
-            Tdate = tmpTdate;
-            tmpTdate='';
-            SubName.push(ctm[i].toString().substring(61,));
-          }
+            temp3 = CheckOver(temp4);
+            if(temp3 == '0'){
+              if(ctm != ctm2[k-1]){
+                ctm2[k]=ctm;
 
-          localStorage.tdate = Tdate;
-          localStorage.setItem("Sub", JSON.stringify(SubName));
+                ctm=['000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000',
+                    '000000000000000000000000000000000000000000000000000000000000'];
+                    k++;
+                  }
+            }
+            else if(temp3 == '1'){
+              ctm=['000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000',
+                   '000000000000000000000000000000000000000000000000000000000000'];
+            }
+          }
         }
+
+
+        let ArrTdate = new Array();
+        //Tdate의 배열
+        function MakeTT2(){
+          let i,j,k;
+          let tmpTdate1='';
+          let tmpTdate2='';
+          let tmpctm2='';
+
+          for(i=0;i<5;i++){
+            tmpTdate2='';
+            for(j=1;j<9;j++){
+              tmpctm2 = ctm2[i][j]+'';
+              tmpTdate1='';
+              for(k=0;k<59;k++){
+                tmpTdate1 = tmpTdate1 + ((tmpTdate1.substring(k,k+1))|(tmpctm2.substring(k,k+1)*j));
+              }
+              tmpTdate2=mixing(tmpTdate2,tmpTdate1);
+            }
+            ArrTdate[i] = tmpTdate2;
+            ArrTdate[i] = ArrTdate[i]+'0';
+          }
+        }
+
+
 
 
         function CreateTT(Tdate,SubName){ // 데이터와 과목이름을 넘겨받아 시간표 생성함수
@@ -518,23 +545,113 @@
               document.write("</tr>");
             }
         }
-        //document.write(OverLap(major[4][0],major[4][1]));
-        alert(typeof(TestMjr));
+
         GetData();
         Comb();
         CheckOpt();
-        MakeTT(ctm);
-        CreateTT(Tdate,SubName);
-        //document.write(MakeRandom(23,26));
-    //OverLap(liberels[7][1],liberels[7][1]);
-      //CheckOpt();
-      //
-        //
-        //CheckOpt();
+        MakeTT2();
+
+
+        // 1.  278 : localStorage.setItem("local_SubName", JSON.stringify(SubName));  >>localStorage에 local_SubName저장
+        // 2. main.131: localStorage에서 local_SubName가져오기
+        // 3. 692 : localStorage.setItem("local_Tdate", ArrTdate[localStorage.getItem("sel_value")]);  >>localStorage에 현재 선택된 시간표 저장
+
+
+
+        //>>main으로 넘어가는 함쑤
+
+
+        window.onload = function(){ // display창 동적 구현
+
+        document.write('<table border="1" style="display: inline-block;">');
+        document.write('<thead><h1>시간표 생성</h1></thead>');
+        document.write('<tbody>');
+        document.write('<tr>');
+        document.write('<td><select size="10" name="optionG" onchange="selectEvent()">');
+        for (var i = 0; i < 5; i++) {
+          document.write('<option value='+i+' name="timeSelect">['+i+']</option>');
+        }
+        document.write('</select></td>');
+        alert(localStorage.getItem("choice"));
+
+        if (localStorage.getItem("choice") == false || localStorage.getItem("choice") == null) {
+          document.write('<td id = "dest">select box에서 원하는 시간표를 선택하세요</td>');
+        }
+        else {
+          document.write('<td>');
+
+          CreateTT(ArrTdate[localStorage.getItem("sel_value")],SubName);
+          let zzz = ArrTdate[localStorage.getItem("sel_value")];
+          localStorage.setItem("local_Tdate",zzz);
+          ///////////////////////////////////////////////////////////////////////////////////////////
+          //이부분이 수정이 필요한 부분입니다  ArrTdate[localStorage.getItem("sel_value")] 가 "local_Tdate 의 이름으로 저장되어야합니다
+
+          document.write('</td>');
+        }
+        document.write('</tr>');
+        document.write('</tbody>');
+        document.write('<tfoot>');
+        document.write('<tr>');
+        document.write('<td colspan="3"><input type="button" name="" value="Create" onclick="goBack();"></td></tr>');
+        document.write('</tfoot>');
+        document.write('</table>');
+
+        localStorage.removeItem("sel_value");
+        localStorage.removeItem("choice");
+      }
+
+      let goBack = function(){
+     //  for (let i = 0; i < rad.length; i++) {
+     //    if(rad[i].checked){
+     //     alert((i+1) + "번 째 시간표를 생성한다.");
+     //     localStorage.setItem("Rad", i);
+     //    }
+     // }
+      opener.location = "Main.html";
+      self.close();
+      }
+
+      let selectEvent = function(){
+        localStorage.setItem("choice", true);
+        chosen_sel = document.getElementsByName('timeSelect');
+        //alert(localStorage.sel_i);
+        for (let i in chosen_sel) {
+          if (chosen_sel[i].selected) {
+            //alert(localStorage.sel_i[v]);
+            localStorage.setItem("sel_value",chosen_sel[i].value);
+            //alert(localStorage.i);
+          }
+        }
+        window.location.reload(true);
+      }
+
+/*
+흐름
+Curriclum.html  ->  TableOption.html  -> MTT_OPT.html  ->  main.html
+
+
+585 : localStorage.setItem("local_Tdate",zzz);
+278 : localStorage.setItem("local_SubName", JSON.stringify(SubName));
+
+이 두 변수가 데이터 베이스에 저장되어야 하며  Main.html에서 불러올수 있어야 한다
+main :131 ,133 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        </script>
   </head>
   <body>
-
   </body>
 </html>
