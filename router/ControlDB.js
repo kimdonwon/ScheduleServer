@@ -34,6 +34,7 @@ module.exports = {
     cw.type=type;
     cw.sub=req.body.sub;
     cw.pro=req.body.pro;
+  
     cw.save(function(err){
       if(err){
         console.error(err);
@@ -88,7 +89,7 @@ module.exports = {
             }
           }
         ],function(err,cw){
-          
+
             call(err,cw);
           })
     // CWModel.find(function(err,cw){

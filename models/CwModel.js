@@ -6,8 +6,10 @@ var cwSchema = new Schema({
     title: String,
     write: String,
     pass: String,
-    type: String
+    type: String,
+    pro: String,
+    sub: String
 });
 
 module.exports = mongoose.model('cw', cwSchema);
-// 
+//
