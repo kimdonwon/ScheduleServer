@@ -14,6 +14,8 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "md5": "^2.2.1",
-    "mongoose": "^5.3.4"
+    "mongoose": "^5.3.4",
+    "passport": "^0.4.0",
+    "passport-kakao": "0.0.5"
   }
 }

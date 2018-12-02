@@ -2,19 +2,21 @@
 var controlDB = require('./ControlDB');
 var dataModel = require('../models/DataModel');
 var cwModel = require('../models/CwModel');
-var ch = require('./filter/check')
+var ch = require('./filter/check');
+var passport = require('passport');
 
 module.exports = function(app){
 
   app.get('/',function(req,res){
+    console.log(req.session)
     if(ch.checkSession(req,res))res.redirect('Main.html')
     else res.render('Login.html')
 
   })
   app.get('/Main.html',function(req,res){
+
     if(ch.checkSession(req,res)){
       controlDB.FindSc(req,res,dataModel,function(err,cw){
-
         tdate = String(cw[0].tdate);
         //console.log(cw[0].subname)
         res.render('Main.html',{
@@ -30,6 +32,7 @@ module.exports = function(app){
 
   app.get('/Login.html',function(req,res){
     sess = req.session;
+  
         if(sess.idd){
             req.session.destroy(function(err){
                 if(err){
@@ -135,6 +138,13 @@ module.exports = function(app){
     }
 
   })
+
+  app.get('/kakao', passport.authenticate('kakao-login'));
+
+  app.get('/oauth/kakao/callback', passport.authenticate('kakao-login'),function(req,res){
+  req.session.idd=req.session.passport.user._id
+  res.redirect('/Main.html')
+});
 
 
 }

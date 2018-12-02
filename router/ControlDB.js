@@ -3,6 +3,7 @@ var md5 = require('./filter/md5')
 
 module.exports = {
 
+
   insertDB:function(req,res,DataModel){
 
     var data = new DataModel();
